@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>WebRTC på 1-2-3</title>
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400|Dosis:300,400|Source+Code+Pro:200,300,400,400bold' rel='stylesheet' type='text/css'>
+    <!-- <link rel="stylesheet" href="remark/kimjoe.css"> -->
+    <style type="text/css" media="screen">
+      @import url(http://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      
+      h1 { font-size: 2.5em; }
+      h2 { font-size: 2em; }
+      h3 { font-size: 1.6em; }
+      h1.inverse {
+        color: #777872;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        color: white;
+        /*text-shadow: 0 0 20px #333;*/
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      pre {
+        border-left: 0.4em solid #d7d7d7;
+        padding: 1em !important;
+      }
+      code {
+        background: transparent !important;
+      }
+      a {
+        color: #F92672;
+        text-decoration: none;
+      }
+      .task {
+        float: right;
+        font-size: 0.9em;
+        padding-top: 0.6em;
+      }
+      .task a {
+        color: #080;
+        text-decoration: none;
+      }
+      .right {
+        float: right;
+        margin-left: 1em;
+      }
+      .pushdown {
+        margin-top: 12em;
+      }
+    </style>
+    <link href="wendelstyle.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <textarea id="source">
+
+class: inverse center middle pink
+
+<h1 style="font-size: 92px;">WebRTC</h1>
+
+<span style="font-size: 35px;">på 1-2-3</span>
+
+<span class="orange" style="font-size: 13px;font-weight: 400;text-transform: uppercase;position:relative;top:160px;">
+Lyntale BEKK Fagdag <br>
+8. november 2013<br>
+Erik Wendel
+</span>
+
+???
+
+Velkommen til litt prat om WebRTC!
+
+Først skal vi innom litt nyere forskning, som viser at
+
+---
+
+class: middle center inverse green
+
+### The Rule of Three
+
+... "[it] states that concepts or ideas presented in threes are inherently more interesting, more enjoyable, and more memorable."
+
+???
+
+Først skal vi innom litt nyere forskning, som viser at budskap som presenteres gjør seg best oppsummert i tre punkter og at dette gjør innholdet automagisk mer interessant, morsomt og minneverdig.
+
+Siden jeg har en del flere punkter, tenkte jeg å gjøre sånn: (og få litt flere punkter)
+
+---
+class: middle center inverse green
+
+### The Rule of Three
+
+... "[it] states that concepts or ideas presented in threes are inherently more interesting, more enjoyable, and more memorable."
+
+### The Rule of Three
+
+... "[it] states that concepts or ideas presented in threes are inherently more interesting, more enjoyable, and more memorable."
+
+### The Rule of Three
+
+... "[it] states that concepts or ideas presented in threes are inherently more interesting, more enjoyable, and more memorable."
+
+---
+
+class: inverse agenda
+
+# Agenda
+
+<br><br><br>
+
+### 1. WebRTC Intro
+hva<br>
+hvem<br>
+hvorfor
+
+<br>
+### 2. Tech Time
+getUserMedia<br>
+PeerConnection<br>
+DataChannel
+
+<br>
+### 3. Roadblocks
+tekniske begrensninger<br>
+nettleserstøtte<br>
+standardiseringsprosessen
+
+
+???
+
+De neste ni og et halvt minuttene skal vi snakke om :
+
+WebRTC, hva det er og hvorfor vi vil ha det
+
+Teknologien det tilbyr oss - de tre JS API-ene
+
+Diskusjonspreget del døpt Roadblocks - hva står i veien for at dette skal slå gjennom, hvordan kan vi bruke det etc.
+
+---
+
+class: inverse middle center
+
+## Hva er WebRTC?
+<span style="position:relative; top: 30px;">
+<i style="font-size: 17px;">
+"WebRTC is a new front in the long war for an open and unencumbered web"
+</i><br>
+<span class="orange">Brendan Eich</span>
+</span>
+
+???
+
+WebRTC er et gratis, åpent prosjekt som muliggjør sanntidskommunikasjon mellom nettlesere gjennom enkle javascript-API. Det betyr at apps med peer-to-peer samtaler, videokonferanser, skjermdeling eller fildeling blir mulig for webutvikleren i gata. Et viktig moment er at dette skjer helt native i nettleseren og uten plugins.
+
+(neste slide) Det startet i 2010 da...
+
+---
+class: inverse fullscreen center middle stretch-half
+
+![google](img/googlelogo.png)
+
+???
+
+(neste slide) Det startet i 2010 da Google kjøpte opp videokodekselskapet On2 som utviklet en serie med kodeker hvor VP8 var siste skudd på stammen. Disse var tenkt som et patentfritt alternativ til H.264-serien videokodeker og Google ønsket å gjøre dette fritt for alle for å redusere lisenskostander.
+
+Senere kjøpte Google opp Global IP Solutions, et selskap som utviklet rammeverk for forenkling av ip-telefoni og videokonferanse. Teknologien fra disse to oppkjøpene slo de sammen og la til et ekstra lag, nemlig et JavaScript API mot nettleseren. Deretter open-sourcet Google hele skaiten, pushet dette mot standardiseringsenhetene W3C og IETF og lanserte denne pakka som WebRTC.
+
+---
+class: inverse middle center
+
+# Hvorfor WebRTC?
+
+<span style="position:relative; top: 30px;">
+<i style="font-size: 17px;">
+"WebRTC and HTML5 could enable the same transformation for real-time communications that the original browser did for information"
+</i><br>
+<span class="orange">Phil Edholm, NoJitter</span>
+</span>
+
+???
+
+De siste ti-femten årene har weben gått fra å være en statisk leverandør av stort sett tekstlig innhold til å bli verdens største application runtime, med alt fra todo-apps til MMO-rollespill kjørende i nettleseren.
+
+Med teknologien til WebRTC vil dette gå enda lenger og helt til det punktet hvor weben kan drive sanntidsapplikasjoner med lyd og bilde uten noen server involvert. Hva med en BitTorrent-klient i nettleseren?
+
+---
+class: inverse agenda
+
+# Tech Time
+
+<br><br>
+WebRTC tilbyr oss tre JS API-er i nettleseren:
+<br><br>
+<br><br>
+### 1. MediaStreams<br><br>
+### 2. RTCPeerConnection<br><br>
+### 3. RTCDataChannel<br><br>
+
+
+???
+
+WebRTC tilbyr tre hovedAPI-er. MediaStreams gir oss tilgang til hardware på devicene som f.eks mikrofon og kamera gjennom getUserMedia(). Denne er noe kjent på egne ben og mange forbinder det ikke nødvendigvis med WebRTC, selv om den er en del av spec-en.
+
+PeerConnection gir oss mulighet til å sende og motta disse strømmene av lyd og bilde mellom oss, mens DataChannel er nettopp det - en kanal for ren data som kan ligne noe på WebSockets.
+
+---
+
+class: inverse pink
+
+# 1. MediaStreams
+
+<br>
+<br>
+Gir tilgang til device hardware gjennom <span class="orange">navigator.getUserMedia()</span>
+
+    var constraints = {video: true};
+
+    function successCallback(stream) {
+      var video = document.querySelector("video");
+      video.src = window.URL.createObjectURL(stream);
+    }
+
+    function errorCallback(error) {
+      console.log("navigator.getUserMedia error: ", error);
+    }
+
+    navigator.getUserMedia(constraints, successCallback, errorCallback);
+
+???
+
+getUserMedia gir som sagt tilgang til devicehardware som kamera og mikrofon, men gjør ikke dette utens brukerens eksplisitte samtykke hver gang en app forespør tilgang. Dette dukker typisk opp som en slidedown-bar under adressefeltet i chrome med den klassiske 'allow or deny'.
+
+Dette returnerer en stream som vi så kan vidersende f.eks et HTML5 video eller audio-element for avspilling, eller sende til en peer.
+
+(neste slide) Vi angir hvilken hardware og ikke minst mediadetaljer gjennom...
+
+---
+class: inverse pink
+
+# 1. MediaStreams 
+
+<br>
+<br>
+Constraints-objektet inneholder detaljene i mediaforespørselen
+
+    var constraints = { 
+      video: {
+        mandatory: {
+          minWidth: 640,
+          minHeight: 360
+        },
+        optional: [{
+          minWidth: 1280,
+          minHeight: 720
+        }]
+    };
+
+Det kan også angis at det er skjermbildet som skal hentes
+
+    var constraints = {
+      video: {
+        mandatory: {
+          chromeMediaSource: 'screen'
+        }
+      }
+    };
+
+???
+
+et constraints-objekt som fungerer som skissert over.
+
+---
+
+class: inverse middle center
+
+# [simpl.info/gum](http://simpl.info/gum)
+
+---
+
+class: inverse middle center
+
+# [gUM screen capture](https://html5-demos.appspot.com/static/getusermedia/screenshare.html)
+
+
+---
+class: inverse green
+
+# 2. RTCPeerConnection
+
+<br>
+<br>
+RTCPeerConnection lar oss sende og motta mediastreams
+
+    pc = new RTCPeerConnection(null);
+    pc.onaddstream = gotRemoteStream;
+    pc.addStream(localStream);
+    pc.createOffer(gotOffer);
+
+    function gotOffer(desc) {
+      pc.setLocalDescription(desc);
+      sendOffer(desc);
+    }
+
+    function gotAnswer(desc) {
+      pc.setRemoteDescription(desc);
+    }
+
+    function gotRemoteStream(e) {
+      attachMediaStream(remoteVideo, e.stream);
+    }
+
+???
+
+De to neste delen av spec-en tar for seg transport av data, hvor en PeerConnection har ansvaret for å sende og motta strømmer av media mellom nettleserne. Her tar RTC på seg ansvar for masse relativt krevende oppgaver, som støyreduksjon, ekkokanselering, sørge for pålitelig transport over UDP etc (forklare UDP kort).
+
+---
+class: inverse middle center green
+
+# [simpl.info/pc](http://simpl.info/pc)
+
+---
+class: inverse orange
+
+# 3. RTCDataChannel
+
+<br>
+RTCDataChannel lar oss sende og motta rådata mellom nettlesere
+
+    var pc = new webkitRTCPeerConnection(servers,
+      {optional: [{RtpDataChannels: true}]});
+
+    pc.ondatachannel = function(event) {
+      event.channel.onmessage = function(event){
+        document.querySelector("div#receive").innerHTML = event.data;
+      };
+    };
+
+    sendChannel = pc.createDataChannel("sendDataChannel", {reliable: false});
+
+    document.querySelector("button#send").onclick = function (){
+      var data = document.querySelector("textarea#send").value;
+      sendChannel.send(data);
+    };
+Lignende API som WebSockets
+
+Lavere latency
+
+Pålitelig og upålitelig tjeneste
+
+Kryptert forbindelse
+
+???
+
+En RTCDataChannel er ikke avhengig av strømmer og brukes til å sende data mellom klienter. Syntaktisk ligner det på WebSockets, men forskjellen er naturligvis at dette går p2p og ikke via en server.
+
+Dette vil naturligvis også medføre en lavere round-trip-time. RTC bruker hovedsaklig UDP som transport, mens brukeren kan velge mellom å ha pålitelig og upålitelig datatransport avhengig av tjenesten.
+
+Dataene er også kryptert med AES automatisk av RTC.
+
+---
+class: inverse middle center orange
+
+# [sharefest.me](http://www.sharefest.me)
+
+---
+class: inverse agenda
+
+# Roadblocks
+
+<span class="orange">WebRTC - the bad parts</span>
+
+<br><br>
+<br><br>
+### 1. Nettleserstøtte
+<br><br>
+### 2. Signalering
+<br><br>
+### 3. Standardisering
+
+---
+class: inverse center middle
+<div style="position: relative; bottom: 45px;">
+# Nettleserstøtte
+</div>
+
+![chromefirefox](img/chromefirefox.png)
+
+<span class="orange" style="position: relative; top: 50px;">
+"getUserMedia-support is not WebRTC-support"
+</span>
+
+???
+
+Nettleserstøtten for WebRTC er ikke helt kanon enda. I utgangspunktet er kun Chrom (naturlig nok) og til dels Firefox som har implementert de tre hovedAPI-ene. Apple har sittet helt stille i båten med Safari uten å si noe, mens Microsoft jo har motstridende interesser med Skype og aldri har vært særlig hissig på å implementere nye webstandarder.
+
+Likevel kan man tenke seg at dersom det kommer noen killer apps som virkelig tar av vil det legge press på browserne som ikke har implementert støtte enda.
+
+---
+class: fullscreen center stretch
+
+![readyyet](img/readyyet.png)
+
+???
+
+På iswebrtcreadyyet.com kan man sjekke status for hva som støttes av de forskjellige browserene.
+
+---
+class: inverse center middle signalling
+<div style="position: relative; bottom: 100px;font-size: 20px;">
+# Signalering
+</div>
+![chromefirefox](img/signalling.png)
+
+???
+
+Selv om WebRTC er p2p er man fortsatt avhengig av servere for å opprette kontakt mellom klientene og utveksle sesjonsinformasjon som hvilke formater man støtter, etc. Ved NAT-problematikk løses dette ved enten STUN, TURN eller ICE som alle støttes av WebRTC.
+
+De vanligste server implementasjonene bruker WebSockets, men det finnes tjenester som tilbyr enkle RTC-backender og også ferdigskrevede servere i f.eks Node.js.
+
+(neste slide) Det finnes også rammeverk som...
+
+---
+class: fullscreen stretch
+
+![PeerJS](img/peerjs.png)
+
+???
+
+Det finnes også rammeverk som håndterer all signalering og serverside logikk for deg som gjør det enkelt å komme igang med en webrtc-app.
+
+---
+
+class: inverse middle center
+<div style="position: relative; bottom: 40px;font-size: 20px;">
+# Standardisering
+</div>
+
+![documents](img/documents.png)
+
+???
+
+TODO: skrive om kodeks, folk med skjegg og tykke briller som sloss om formater og protokoller - nasty stuff, ting tar sin tid, forskjellige økonomiske interesser, Google VP8 vs Apple H264, Cisco, Microsoft og Skype etc.
+
+---
+class: inverse middle center
+
+# Modent for BEKK?
+
+???
+
+Nei, nettleserstøtten er nok en showstopper, men hvis lar oss leke med tanken kunne vi sett for tjenester hvor man kobler mobilen og nettleseren sammen og bruker mobilen til å velge / styre med, eller tjenester hvor våre kunders kunder kommuniserer sammen om å løse et problem f.eks chat etc.
+
+---
+
+class: inverse middle center
+
+# Noe å følge med på fremover?
+
+???
+
+Definitivt. Spørsmålene rundt codecs, standardiseringsarbeid og IE / Safari-støtte vil være temmelig avgjørende.
+
+Uansett vil etterspørselen etter denne typen funksjonalitet i browseren definitivt vokse i tiden som kommer.
+
+---
+class: inverse moreinfo
+
+# Lenker
+
+<br>
+<br>  
+
+[Real-time Communication With WebRTC, Google I/O 2013 Talk](http://www.youtube.com/watch?v=p2HzZkd2A40)
+
+[The State of WebRTC, Rob Hawkes @ WebRebels 2013](http://vimeo.com/76165652)
+
+[Offisiell nettside: webrtc.org](http://www.webrtc.org/)
+
+[HTML5 Rocks: Capturing audio and video](http://www.html5rocks.com/en/tutorials/getusermedia/intro/)
+
+[HTML5 Rocks: Getting started with WebRTC](http://www.html5rocks.com/en/tutorials/webrtc/basics/)
+
+[WebRTC Blog: bloggeek.me](http://bloggeek.me/webrtc-posts/)
+
+---
+
+class: inverse middle center
+
+# Oppsummering
+
+???
+
+Da har vi sett at WebRTC vil muliggjøre sanntidskommunikasjon p2p mellom nettlesere, at dette er et initiativ fra Google og at det er særdeles fett.
+
+WebRTC består av tre API-er som er getUserMedia som gir tilgang til devicehardware, PeerConnections som transporterer disse mediastrømmene og DataChannels som transporterer rådata.
+
+Ulempene så langt er nettleserstøtten (er det ikke alltid det), at håndtering av signalering kan være litt trøblete samt at standardiseringsprosessen går litt tregt.
+
+---
+class: inverse middle center pink
+
+# Spørsmål?
+<br><br>
+<span class="orange">erik.wendel@bekk.no</span>
+
+<span class="orange">@ewndl</span>
+
+
+    </textarea>
+    <script src="http://gnab.github.com/remark/downloads/remark-0.5.3.min.js" type="text/javascript"></script>
+    <script src="js/remark.language.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({
+          highlightStyle: 'solarized_light',
+          highlightLanguage: 'remark'
+        }) ;
+      var a = [];
+      slideshow.addListener("slidein",function(b,c){if(a.indexOf(c)>-1)return;var d=$(b);d.find("p:empty").remove(),d.find(".front-page").length===0&&d.find("h1").wrapInner("<span>"),d.find(".pushed img").parent().wrapInner("<span class='img'>"),a.push(c)})
+    </script>
+  </body>
+</html>

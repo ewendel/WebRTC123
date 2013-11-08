@@ -1,0 +1,71 @@
+.fullscreen {
+  padding: 0 !important;
+}
+.fullscreen p {
+  margin: 0 !important;
+}
+.pink h1, .pink h2, .pink h3 {
+  color: #F92672 !important;
+}
+.green h1, .green h2, .green h3, .green a{
+  color: #A6E22E !important;
+}
+.orange h1, .orange h2, .orange h3, .orange a{
+  color: #FD971F !important;
+}
+.blue h1, .blue h2, .blue h3 {
+  color: #66D9EF !important;
+}
+span.orange {
+  color: #FD971F !important;;
+}
+
+body { 
+  font-family: 'Source Code Pro';
+  font-weight: 300; 
+}
+h1, h2, h3 {
+  font-family: 'Source Code Pro';
+  font-weight: 400;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+code {
+  font-size: 18px;
+}
+.largeLink {
+  font-size: 72px;
+}
+span.pink {
+  color: #F92672 !important;
+}
+span.orange {
+  color: #FD971F !important;
+}
+.agenda h3{
+  color: #f3f3f3 !important;
+}
+.agenda {
+  color: #FD971F !important;
+}
+.techtime h2 {
+  font-size: 37px;
+  font-weight: 300;
+  color: #FD971F;
+}
+.moreinfo {
+  font-size: 20px;
+  font-weight: 400;
+}
+.stretch img {
+  max-width: 100%
+}
+.stretch-half img {
+  max-width: 50%;
+}
+.remark-position {
+  color: #FD971F;
+}
+.signalling img{
+  width: 50%;
+}
